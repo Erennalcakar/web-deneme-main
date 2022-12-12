@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";;
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -7,6 +7,7 @@ import { initializeApp } from "firebase/app";
 const firebaseConfig = {
   apiKey: "AIzaSyD7NSonfkYq5jMcQCh8LKcEXta7jQ-6v94",
   authDomain: "web-project-deneme.firebaseapp.com",
+  databaseURL: "https://web-project-deneme-default-rtdb.firebaseio.com",
   projectId: "web-project-deneme",
   storageBucket: "web-project-deneme.appspot.com",
   messagingSenderId: "131016870019",
@@ -16,13 +17,12 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-//-----------------------firebase storage---------------------//
-import {getStorage, ref as sRef, uploadbytesResumable, getDownloadURL} from "firebase/storage";
+import {getStorage, ref as sRef, uploadBytesResumable,getDownloadURL} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-storage.js";;
+import {getDatabase, ref, set, child, get} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";;
 
-//-----------------------firebase database-------------------//
-import {getDataBase, ref, set, child, get} from "firebase/database";
+const realdb = getDatabase();
 
-const realdb = getDataBase();
+
 
 //r-------------references and variables----------------//
 var files=[];
@@ -111,7 +111,7 @@ function GetImgUploadProgress(){
     return 'Images Uploaded' + imageLinksArray.length+ ' of ' + files.length;
 }
 
-function IsAllImagesDownloaded(){
+function IsAllImagesUploaded(){
     return imageLinksArray.length == files.length;
 }
 
@@ -141,7 +141,7 @@ addBtn.addEventListener('click', UploadAllImages);
 //-------------------upload image----------------------//
 
 function UploadAllImages(){
-    selBtn.disapled=true;
+    selBtn.disabled=true;
     addBtn.disabled=true;
 
     imageLinksArray=[];
@@ -159,9 +159,9 @@ function UploadAnImage(imgToUpload, imgNo){
     };
 
     const storage = getStorage();
-    const ImageAdress="images/" + getShortTitle()+ "/img#"+ (imgNo+1);
-    const storageRef = sRef(storage, ImageAdress);
-    const uploadTask = uploadbytesResumable(storageRef, imgToUpload, metadata);
+    const ImageAddress="images/" + getShortTitle()+ "/img#"+ (imgNo+1);
+    const storageRef = sRef(storage, ImageAddress);
+    const uploadTask = uploadBytesResumable(storageRef, imgToUpload, metadata);
     
     uploadTask.on('state_changed', (snapshot) =>{
         proglab.innerHTML= GetImgUploadProgress();
@@ -174,10 +174,9 @@ function UploadAnImage(imgToUpload, imgNo){
     ()=>{
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             imageLinksArray.push(downloadURL);
-            if(IsAllImagesDownloaded()){
+            if(IsAllImagesUploaded()){
                 proglab.innerHTML='all images uploaded';
                 UploadAProduct();
-
             }
         });
     }
@@ -191,7 +190,7 @@ function UploadAnImage(imgToUpload, imgNo){
             description: description.value,
             price: price.value,
             stock: stock.value,
-            points:GetPoints(),
+            points: GetPoints(),
             LinksOfImagesArray: imageLinksArray
         });
         alert("upload successful");
