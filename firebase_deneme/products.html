@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div id="productsDiv" class="container">
+        <div class="productcard">
+            <img src="images/laptop1.jpg" class="thumb mt-2" id="thumb1" width="1000px" height="1000px">
+            <p class="title" id="title1">laptop asdasda asdadadas adasdada adas</p>
+            <ul class="points">
+                <li>laptop asdasda asdadadas adasdada adas</li>
+                <li>laptop asdasda asdadadas adasdada adas</li>
+                <li>laptop asdasda asdadadas adasdada adas</li>
+                <li>laptop asdasda asdadadas adasdada adas</li>
+            </ul>
+            <h5>Rs. 18,500</h5>
+            <button class="btn" id="detbtn">View Details</button>
+        </div>
+    </div>
+
+    <script>
+        function getShortTitle(){
+            if(title.length>49) title = title.substring(0,47);
+            else return title;
+            return title + "...";
+        }
+    </script>
+</body>
+</html>

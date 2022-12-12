@@ -1,0 +1,139 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyD7NSonfkYq5jMcQCh8LKcEXta7jQ-6v94",
+  authDomain: "web-project-deneme.firebaseapp.com",
+  projectId: "web-project-deneme",
+  storageBucket: "web-project-deneme.appspot.com",
+  messagingSenderId: "131016870019",
+  appId: "1:131016870019:web:6f16c089a4f7368a4bf3b6"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+//-----------------------firebase storage---------------------//
+import {getStorage, ref as sRef, uploadbytesResumable, getDownloadURL} from "firebase/storage";
+
+//-----------------------firebase database-------------------//
+import {getDataBase, ref, set, child, get} from "firebase/database";
+
+const realdb = getDataBase();
+
+//r-------------references and variables----------------//
+var files=[];
+var fileReaders=[];
+var imageLinksArray=[];
+
+const imgdiv= document.getElementById('imagesDiv');
+const selBtn= document.getElementById('selimgsbtn');
+const addBtn= document.getElementById('addprodbtn');
+const proglab= document.getElementById('loadlab');
+
+const name= document.getElementById('nameinp');
+const category= document.getElementById('catinp');
+const description= document.getElementById('desarea');
+const price= document.getElementById('priceinp');
+const stock= document.getElementById('stockinp');
+
+const p1= document.getElementById('p1inp');
+const p2= document.getElementById('p2inp');
+const p3= document.getElementById('p3inp');
+const p4= document.getElementById('p4inp');
+
+
+function OpenFileDialog(){
+    let inp = document.createElement('input');
+    inp.type='file';
+    inp.multiple='multiple';
+
+    inp.onchange = (e) => {
+        AssignImgsToFilesArray(e.target.files);
+        CreateImgTags();
+    }
+    inp.click();
+}
+
+    
+
+function AssignImgsToFilesArray(thefiles){
+    let num = files.length + thefiles.length;
+    let looplim = (num <= 10) ? thefiles.length : (10 - files.length);
+
+    for (let i=0; i<looplim; i++){
+        files.push(thefiles[i]);
+    }
+    if(num>10) alert("max 10 images are allowed");
+}
+
+function CreateImgTags(){
+    imgdiv.innerHTML='';
+    imgdiv.classList.add('imagesDivStyle');
+
+    for (let i = 0; i<files.length; i++) {
+        fileReaders[i] = new FileReader();
+
+        fileReaders[i].onload = function(){
+            var img= document.createElement('img');
+            img.id='imgNo'+i;
+            img.classList.add('imgs');
+            img.src=fileReaders[i].result;
+            imgdiv.append(img);
+        }
+
+        fileReaders[i].readAsDataURL(files[i]);
+    }
+}
+
+function getShortTitle(){
+    let namey = name.value.substring(0,50);
+    return namey.replace(/[^a-zA-Z0-9]/g,"");
+}
+
+function GetImgUploadProgress(){
+    return 'Images Uploaded' + imageLinksArray.length+ ' of ' + files.length;
+}
+
+function IsAllImagesDownloaded(){
+    return imageLinksArray.length == files.length;
+}
+
+
+//---------------------------------events------------------//
+
+selBtn.addEventListener('click', OpenFileDialog);
+
+//-------------------upload image----------------------//
+function UploadAnImage(imgToUpload, imgNo){
+    const metadata = {
+        contentType: imgToUpload.type
+    };
+
+    const storage = getStorage();
+    const ImageAdress="images" + getShortTitle()+ "img#"+ (imgNo+1);
+    const storageRef = sRef(storage, ImageAdress);
+    const uploadTask = uploadbytesResumable(storageRef, imgToUpload, metadata);
+    
+    uploadTask.on('state-changed', (snapshot) =>{
+        proglab.innerHTML= GetImgUploadProgress();
+    }),
+
+    (error)=>{
+        alert("error: image uplaod failed");
+    },
+
+    ()=>{
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            imageLinksArray.push(downloadURL);
+            if(IsAllImagesDownloaded){
+                proglab.innerHTML='all images uploaded';
+                UploadProduct();
+
+            }
+        });
+    }
+}

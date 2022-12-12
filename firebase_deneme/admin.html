@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .imagesDivStyle{
+            width: 600px;
+            border: 1px gray solid;
+            padding: 5px;
+            margin-left: 120px;
+            margin-bottom: 20px;
+        }
+
+        .imgs{
+            height: 80px;
+            width: 100px;
+            border: 1px black dashed;
+            margin: 5px;
+        }
+
+        label{
+             display: inline-block;
+             width: 120px;
+        }
+
+        input,textarea,select{
+            width: 600px;
+            border: gray 1px solid;
+            resize: none;
+            padding: 8px;
+        }
+
+        select{
+            width: 618px;
+        }
+
+        textarea{
+            height: 100px;
+        }
+
+        .pointers{
+            border: 1px darkslateblue dashed;
+        }
+
+        #pdlab{
+            height: 100px;
+            vertical-align: top;
+        }
+
+        #addprodbtn, #selimgsbtn{
+            float: right;
+            margin-left: 10px;
+        }
+
+        #controlDiv{
+            width: 740px;
+        }
+
+        #loadlab{
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <label>Product Name</label> <input type="text" id="nameinp"> <br> <br>
+    <label>Product Price</label> <input type="text" id="priceinp"> <br> <br>
+    <label>Stock (Quantity)</label> <input type="text" id="stockinp"> <br> <br> 
+    <label>Category</label> 
+    <select id="catinp">
+        <option value="Keyboard and Mouse">Keyboard and Mouse</option>
+        <option value="Laptops">Laptops</option>
+        <option value="Monitors">Monitors</option>
+        <option value="Graphics Card">Graphics Card</option>
+        <option value="Power Supply">Power Supply</option>    
+    </select> <br> <br>
+
+    <label>Points #1</label> <input type="text" id="p1inp" class="pointers"> <br> <br>
+    <label>Points #2</label> <input type="text" id="p2inp" class="pointers"> <br> <br>
+    <label>Points #3</label> <input type="text" id="p3inp" class="pointers"> <br> <br>
+    <label>Points #4</label> <input type="text" id="p4inp" class="pointers"> <br> <br>
+    <label id="pdlab">Product Description</label> <textarea id="desarea"> </textarea> <br> <br>
+
+    <div id="imagesDiv"></div>
+    <div id="controldiv">
+        <label></label><label id="loadlab">uploading 1 of 3</label>
+        <button id="addprodbtn">Add Product</button>
+        <button id="selimgsbtn">Select Images</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
