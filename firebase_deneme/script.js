@@ -87,6 +87,19 @@ function CreateImgTags(){
 
         fileReaders[i].readAsDataURL(files[i]);
     }
+    let lab = document.getElementById('label');
+    lab.innerHTML('clear images');
+    lab.style = 'cursor:pointer;display:block;color:navy; font-size:12px';
+    lab.addEventListener('click', ClearImages);
+    imgdiv.append(lab);
+}
+
+function ClearImages(){
+    files=[];
+    imageLinksArray=[];
+    imgdiv.innerHTML='';
+    imgdiv.classList.remove('imagesDivStyle');
+
 }
 
 function getShortTitle(){
@@ -102,25 +115,57 @@ function IsAllImagesDownloaded(){
     return imageLinksArray.length == files.length;
 }
 
+function GetPoints(){
+    let points = [];
+   if(p1.value.length > 0) points.push(p1.value);
+   if(p2.value.length > 0) points.push(p2.value);
+   if(p3.value.length > 0) points.push(p3.value);
+   if(p4.value.length > 0) points.push(p4.value);
+
+   return points;
+}
+
+function RestoreBack(){
+    selBtn.disabled=false;
+    addBtn.disabled=false;
+    proglab.innerHTML='';
+}
+
+
 
 //---------------------------------events------------------//
 
 selBtn.addEventListener('click', OpenFileDialog);
+addBtn.addEventListener('click', UploadAllImages);
 
 //-------------------upload image----------------------//
+
+function UploadAllImages(){
+    selBtn.disapled=true;
+    addBtn.disabled=true;
+
+    imageLinksArray=[];
+
+    for(let i=0; i<files.length; i++){
+        UploadAnImage(files[i], i);
+    }
+}
+
+
+
 function UploadAnImage(imgToUpload, imgNo){
     const metadata = {
         contentType: imgToUpload.type
     };
 
     const storage = getStorage();
-    const ImageAdress="images" + getShortTitle()+ "img#"+ (imgNo+1);
+    const ImageAdress="images/" + getShortTitle()+ "/img#"+ (imgNo+1);
     const storageRef = sRef(storage, ImageAdress);
     const uploadTask = uploadbytesResumable(storageRef, imgToUpload, metadata);
     
-    uploadTask.on('state-changed', (snapshot) =>{
+    uploadTask.on('state_changed', (snapshot) =>{
         proglab.innerHTML= GetImgUploadProgress();
-    }),
+    },
 
     (error)=>{
         alert("error: image uplaod failed");
@@ -129,11 +174,26 @@ function UploadAnImage(imgToUpload, imgNo){
     ()=>{
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             imageLinksArray.push(downloadURL);
-            if(IsAllImagesDownloaded){
+            if(IsAllImagesDownloaded()){
                 proglab.innerHTML='all images uploaded';
-                UploadProduct();
+                UploadAProduct();
 
             }
         });
     }
+    );
 }
+//--------------------upload a product----------------//
+    function UploadAProduct(){
+        set(ref(realdb,"TheProductRealdb/" + getShortTitle()),{
+            ProductTitle: name.value,
+            category: category.value,
+            description: description.value,
+            price: price.value,
+            stock: stock.value,
+            points:GetPoints(),
+            LinksOfImagesArray: imageLinksArray
+        });
+        alert("upload successful");
+        RestoreBack();
+    }
