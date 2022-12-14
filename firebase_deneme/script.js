@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";;
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -17,8 +17,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-import {getStorage, ref as sRef, uploadBytesResumable,getDownloadURL} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-storage.js";;
-import {getDatabase, ref, set, child, get} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";;
+import {getStorage, ref as sRef, uploadBytesResumable,getDownloadURL} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-storage.js";
+import {getDatabase, ref, set, child, get} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
 const realdb = getDatabase();
 
@@ -134,9 +134,9 @@ function RestoreBack(){
 
 
 //---------------------------------events------------------//
+if(selBtn){selBtn.addEventListener('click', OpenFileDialog);}
 
-selBtn.addEventListener('click', OpenFileDialog);
-addBtn.addEventListener('click', UploadAllImages);
+if(addBtn){addBtn.addEventListener('click', UploadAllImages);}
 
 //-------------------upload image----------------------//
 
@@ -168,7 +168,7 @@ function UploadAnImage(imgToUpload, imgNo){
     },
 
     (error)=>{
-        alert("error: image uplaod failed");
+        alert("error: image uplaod failed" + error);
     },
 
     ()=>{
@@ -196,3 +196,5 @@ function UploadAnImage(imgToUpload, imgNo){
         alert("upload successful");
         RestoreBack();
     }
+
+    
