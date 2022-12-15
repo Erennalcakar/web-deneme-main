@@ -30,7 +30,7 @@ window.addEventListener('load', GetAllProducts);
 
 function GetAllProducts(){
     const dbref = ref(realdb);
-
+    
     get(child(dbref, "TheProductRealdb"))
     .then((snapshot)=>{ 
         snapshot.forEach(prod =>{
@@ -84,11 +84,10 @@ function GenerateStockLabel(stock){
     return stocklabel.outerHTML;
 }
 
-function GetUl(array){
+function GetUl(param_array){
     let ul = document.createElement('ul');
     ul.classList.add('points');
-    var array = [];
-    array.forEach(element => {
+    param_array.forEach(element => {
         let li = document.createElement('li')
         li.innerText=element;
         ul.append(li);
