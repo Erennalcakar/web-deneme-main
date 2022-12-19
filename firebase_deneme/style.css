@@ -109,3 +109,11 @@
 #title, #description{
     word-wrap: break-word;
 }
+
+.test-success{
+    color: green;
+}
+
+.test-warning{
+    color: red;
+}
