@@ -182,9 +182,12 @@ function UploadAnImage(imgToUpload, imgNo){
     }
     );
 }
+
+let catga = document.getElementById('catinp');
+
 //--------------------upload a product----------------//
     function UploadAProduct(){
-        set(ref(realdb,"TheProductRealdb/" + getShortTitle()),{
+        set(ref(realdb,category.value + getShortTitle()),{
             ProductTitle: name.value,
             category: category.value,
             description: description.value,
